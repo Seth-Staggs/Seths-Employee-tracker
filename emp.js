@@ -1,8 +1,7 @@
 var mysql = require("mysql"); // connects to mysql
 var inquirer = require("inquirer"); // interacts with user through cmd line
 var promisemysql = require("promise-mysql"); // Asyncronous 
-
-
+require("console.table");
 
 var conProp = {
     host: "localhost",
@@ -97,4 +96,84 @@ function addDepartment() {
             }
           );
     }); 
+};
+
+//Function to add roles
+function addEmployeeRole() {
+    let dptName = []
+   promisemysql.createConnection(conProp)
+   .then((dbconnection) => {
+       return Promise.all([
+            dbconnection.query("SELECT * FROM department"),
+       ]);
+
+   })
+   .then(([department]) => {
+    for (var i = 0; i < department.length; i++) {
+        dptName.push(department[i].department_name);
+    }
+
+    return Promise.all([department]);
+
+    }).then(([department]) => {
+
+            inquirer.prompt([
+                {
+                    type: "input",
+                    name: "role",
+                    message: "Add Employee Role: ",
+                    validate: function(input){
+                        if (input === ""){
+                            console.log("Employee Role Required");
+                            return false;
+                        }
+                        else{
+                            return true;
+                        }
+                    }
+                },
+                {
+                    type: "input",
+                    name: "salary",
+                    message: "Employee Role Salary: ",
+                    validate: function(value) {
+                        if (isNaN(value) === false) {
+                        return true;
+                        }
+                        return false;
+                    }
+                },
+                {
+                    type: "list",
+                    name: "department",
+                    message: "Department for this Role: ",
+                    choices: dptName
+                }
+                
+            ]).then(answers=>{
+
+                let dptID;
+
+                for (var i = 0; i < department.length; i++) {
+                    if (answers.department == department[i].department_name) {
+                        dptID = department[i].id;
+                    }
+                } 
+                
+                connection.query(
+                    "INSERT INTO employee_role SET ?",
+                    {
+                    title: answers.role,
+                    salary: answers.salary,
+                    department_id: dptID
+                    },
+                    function(err) {
+                    if (err) throw err;
+                    console.log("Employee Role added successfully"); 
+                    start();
+                    }
+                );
+            })
+        })  
+    
 };
