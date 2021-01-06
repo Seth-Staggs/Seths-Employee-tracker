@@ -6,8 +6,9 @@ var promisemysql = require("promise-mysql"); // Asyncronous
 var conProp = {
     host: "localhost",
     port: 3306,
+    // Your Username and Password
     user: "root",
-    password: "Samm@b0y",
+    password: "root",
     database: "employeetracker_db"
 };
 
