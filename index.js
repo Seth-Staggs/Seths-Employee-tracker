@@ -7,7 +7,7 @@ var conProp = {
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "root",
+    password: "Samm@b0y",
     database: "employeetracker_db"
 };
 
@@ -182,7 +182,7 @@ function addEmployee() {
 
     promisemysql.createConnection(conProp).then((dbconnection) => {
         return Promise.all([
-            dbconnection.query("SELECT * FROM employee_role"),
+            dbconnection.query("SELECT * FROM emp_role"),
             dbconnection.query("SELECT employee.id, concat(employee.first_name, ' ' ,  employee.last_name) AS fullName FROM employee ORDER BY fullName ASC")
         ]);
 
@@ -277,7 +277,7 @@ function addEmployee() {
 
 // Function for viewing departments.
 function viewDepartments() {
-    connection.query("SELECT department.id, department.department_name, SUM(emp_role.salary) AS utilized_budget FROM employee LEFT JOIN emp_role on emp.role_id = emp_role.id LEFT JOIN department on emp_role.department_id = department.id GROUP BY department.id, department.department_name;", function (err, results) {
+    connection.query("SELECT department.id, department.department_name, SUM(emp_role.salary) AS utilized_budget FROM employee LEFT JOIN emp_role on employee.role_id = emp_role.id LEFT JOIN department on emp_role.department_id = department.id GROUP BY department.id, department.department_name;", function (err, results) {
         if (err) throw err;
         console.table(results);
         start();
