@@ -7,7 +7,7 @@
 * [License](#license)
 * [Contact](#contact)
 ## Installation
-just clone the git repo then install the npm modules. mysql is also needed
+just clone the git repo then install the npm modules. mysql is also needed. you will need to replace the password in the connection properties with your own password.
 ## Description
  A program that allows a user to manage employee data in formatted tables. 
 ## Usage
